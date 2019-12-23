@@ -1,13 +1,10 @@
-# use a node base image
-FROM node:7-onbuild
+FROM golang:1.13-alpine AS builder
+RUN apk add --no-cache git
+RUN go get github.com/pdevine/go-asciisprite && go get github.com/pdevine/goMoonPhase
+WORKDIR /project
+COPY *.go /project/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o Hello Hello.py
 
-# set maintainer
-LABEL maintainer "raviteja.goli@pennywisesolutions.com"
-
-# set a health check
-HEALTHCHECK --interval=5s \
-            --timeout=5s \
-            CMD curl -f http://127.0.0.1:8000 || exit 1
-
-# tell docker what port to expose
-EXPOSE 8000
+FROM scratch
+COPY --from=builder /project/Hello /Hello
+ENTRYPOINT ["/Hello"]
