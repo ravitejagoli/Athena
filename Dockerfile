@@ -1,5 +1,4 @@
 FROM jenkins
-USER root
 RUN mkdir /my_app
 WORKDIR /my_app
 COPY requirements.txt /my_app
