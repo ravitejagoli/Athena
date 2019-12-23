@@ -1,4 +1,4 @@
-FROM jenkins latest
+FROM jenkins
 USER root
 RUN mkdir /my_app
 WORKDIR /my_app
