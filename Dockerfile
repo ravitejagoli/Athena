@@ -1,9 +1,13 @@
-# Use Node.js 12
-FROM node:12-alpine
+# use a node base image
+FROM node:7-onbuild
 
-# Bundle app source
-COPY . .
+# set maintainer
+LABEL maintainer "suresh.molleti@ibm.com"
 
-# Expose the right port
-EXPOSE 2002
-CMD [ "npm", "start" ]
+# set a health check
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:8000 || exit 1
+
+# tell docker what port to expose
+EXPOSE 8000
