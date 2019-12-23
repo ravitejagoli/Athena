@@ -1,8 +1,7 @@
-FROM jenkins
-RUN mkdir /my_app
-WORKDIR /my_app
-COPY requirements.txt /my_app
-RUN pwd
-RUN ls -la
-RUN apt-get update
-RUN apt-get install -y python-pip
+FROM python:3
+
+ADD Hello.py /
+
+RUN pip install pystrich
+
+CMD [ "python", "./Hello.py" ]
