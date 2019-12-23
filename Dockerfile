@@ -1,9 +1,9 @@
-FROM golang:1.13-alpine AS builder
-
-WORKDIR /project
-COPY *.go /project/
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o Hello Hello.py
-
-FROM scratch
-COPY --from=builder /project/Hello /Hello
-ENTRYPOINT ["/Hello"]
+FROM jenkins latest
+USER root
+RUN mkdir /my_app
+WORKDIR /my_app
+COPY requirements.txt /my_app
+RUN pwd
+RUN ls -la
+RUN apt-get update
+RUN apt-get install -y python-pip
